@@ -3,20 +3,22 @@
 public class Author
 {
     public int Id { get; set; }
-    public string? Name { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? Email { get; set; }
+    [Required]
+    public string? Name { get; set; }
     public ICollection<Book> Books { get; set; } = new List<Book>();
 }
 
 public class Book
 {
     public int Id { get; set; }
-    public string? Title { get; set; }
     public int? PublicationYear { get; set; }
     public int AuthorId { get; set; }
     public Author? Author { get; set; }
     public int? Pages { get; set; }
+    [Required]
+    public string? Title { get; set; }
 }
 
 public class AppDbContext : DbContext
@@ -40,10 +42,6 @@ public class AppDbContext : DbContext
             .IsUnique(false);
 
         modelBuilder.Entity<Author>()
-            .Property(a => a.Name)
-            .IsRequired();
-
-        modelBuilder.Entity<Author>()
             .HasIndex(a => a.Email)
             .IsUnique();
 
@@ -54,10 +52,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Book>()
             .HasIndex(b => b.Title)
             .IsUnique(false);
-
-        modelBuilder.Entity<Book>()
-            .Property(b => b.Title)
-            .IsRequired();
 
         modelBuilder.Entity<Book>()
             .Property(b => b.PublicationYear)
